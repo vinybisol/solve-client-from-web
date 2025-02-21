@@ -1,0 +1,30 @@
+<form class="form" [formGroup]="registerFormGroup">
+    <mat-form-field>
+        <mat-label>Certificado digital</mat-label>
+        <input type="text" matInput formControlName="digitalCertificate">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input type="text" matInput formControlName="digitalCertificatePassword">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Contrato social</mat-label>
+        <input type="text" matInput formControlName="socialContract">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Nome Proprietario</mat-label>
+        <input type="text" matInput formControlName="propertyOwnerName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Telefone Proprietario</mat-label>
+        <input type="tel" matInput formControlName="propertyOwnerPhone">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>E-mail Proprietario</mat-label>
+        <input type="email" matInput formControlName="propertyOwnerEmail">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Outras informações</mat-label>
+        <textarea matInput formControlName="otherInformations"></textarea>
+    </mat-form-field>
+</form>
