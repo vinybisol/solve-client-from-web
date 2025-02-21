@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+
+import { AccountingFormComponent } from './accounting-form/accounting-form.component';
+import { GeneralFormComponent } from './general-form/general-form.component';
 
 @Component({
   selector: 'app-register',
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [GeneralFormComponent, AccountingFormComponent, MatCardModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   animations: []
