@@ -1,0 +1,4 @@
+<div *ngFor="let branch of branchesForm">
+    <ng-container *ngComponentOutlet="branch"></ng-container>
+</div>
+<button mat-button (click)="addBranch()">Adicionar filial</button>
