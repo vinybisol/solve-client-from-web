@@ -1,0 +1,30 @@
+<form class="form" [formGroup]="registerFormGroup">
+    <mat-form-field>
+        <mat-label>Nome da Contabilidade</mat-label>
+        <input type="text" matInput formControlName="accountingName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>CNPJ</mat-label>
+        <input type="number" matInput formControlName="accountingCNPJ">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Nome Contador</mat-label>
+        <input type="text" matInput formControlName="accounterName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>CPF</mat-label>
+        <input type="number" matInput formControlName="accounterCPF">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>CRC</mat-label>
+        <input type="number" matInput formControlName="accounterCRC">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Telefone</mat-label>
+        <input type="number" matInput formControlName="accountingPhone">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>E-mail</mat-label>
+        <input type="email" matInput formControlName="accountingEmail">
+    </mat-form-field>
+</form>
