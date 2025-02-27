@@ -2,10 +2,11 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { BranchesFormComponent } from '../branches-form/branches-form.component';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-branches-list',
-  imports: [CommonModule, NgComponentOutlet, MatButtonModule],
+  imports: [CommonModule, NgComponentOutlet, MatButtonModule, MatCardModule],
   templateUrl: './branches-list.component.html',
   styleUrl: './branches-list.component.scss'
 })

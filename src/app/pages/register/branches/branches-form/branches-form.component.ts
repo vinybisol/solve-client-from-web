@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BranchesBankFormComponent } from "../branches-bank-form/branches-bank-form.component";
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-branches-form',
-  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent],
+  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent, MatCardModule],
   templateUrl: './branches-form.component.html',
   styleUrl: './branches-form.component.scss'
 })

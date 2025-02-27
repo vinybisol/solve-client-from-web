@@ -1,22 +1,29 @@
-<form class="form" [formGroup]="registerFormGroup">
-    <mat-form-field>
-        <mat-label>Banco</mat-label>
-        <input type="number" matInput formControlName="bankNumber">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Agência</mat-label>
-        <input type="number" matInput formControlName="bankAgency">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Conta</mat-label>
-        <input type="text" matInput formControlName="bankCheckingAccount">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Nome do gerente</mat-label>
-        <input type="text" matInput formControlName="bankManagerName">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Contato gerente</mat-label>
-        <input type="text" matInput formControlName="bankMangerPhone">
-    </mat-form-field>
-</form>
+<mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Dados bancários</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form class="form" [formGroup]="registerFormGroup">
+            <mat-form-field>
+                <mat-label>Banco</mat-label>
+                <input type="number" matInput formControlName="bankNumber">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Agência</mat-label>
+                <input type="number" matInput formControlName="bankAgency">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Conta</mat-label>
+                <input type="text" matInput formControlName="bankCheckingAccount">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Nome do gerente</mat-label>
+                <input type="text" matInput formControlName="bankManagerName">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Contato gerente</mat-label>
+                <input type="text" matInput formControlName="bankMangerPhone">
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>

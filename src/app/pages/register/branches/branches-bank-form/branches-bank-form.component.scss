@@ -1,6 +1,6 @@
 .form {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }

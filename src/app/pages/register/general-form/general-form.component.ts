@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-general-form',
-  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDatepickerModule],
+  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDatepickerModule, MatCardModule],
   templateUrl: './general-form.component.html',
   styleUrl: './general-form.component.scss',
   providers: [provideNativeDateAdapter()]

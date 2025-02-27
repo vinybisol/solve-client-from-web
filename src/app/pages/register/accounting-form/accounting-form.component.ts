@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-accounting-form',
-  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule],
+  imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatCardModule],
   templateUrl: './accounting-form.component.html',
   styleUrl: './accounting-form.component.scss'
 })
