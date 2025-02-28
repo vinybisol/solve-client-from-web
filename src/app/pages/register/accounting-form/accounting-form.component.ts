@@ -23,4 +23,8 @@ export class AccountingFormComponent {
     accountingPhone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
     accountingEmail: ['', [Validators.required, Validators.email]],
   })
+
+  get formControls() {
+    return this.registerFormGroup.value;
+  }
 };

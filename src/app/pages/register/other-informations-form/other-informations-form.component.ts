@@ -22,4 +22,8 @@ export class OtherInformationsFormComponent {
     propertyOwnerEmail: ['', [Validators.required, Validators.email]],
     otherInformations: [''],
   })
+  
+  get formControls() {
+    return this.registerFormGroup.value;
+  }
 }

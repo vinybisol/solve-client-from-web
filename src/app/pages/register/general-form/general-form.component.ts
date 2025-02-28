@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -16,7 +16,6 @@ import { MatInputModule } from '@angular/material/input';
 export class GeneralFormComponent {
   private formBuilder = inject(FormBuilder);
 
-
   registerFormGroup = this.formBuilder.group({
     startDate: [new Date().toISOString(), [Validators.required]],
     systemConversion: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -24,17 +23,8 @@ export class GeneralFormComponent {
     databaseLink: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
   });
 
-  // onSubmit() {
-  //   console.log(this.registerFormGroup.value);
-  //   console.log(this.registerFormGroup.get('startDate')?.value?.toString());
-  //   //Arrumar a data para o formato correto
-  //   const startDate = this.registerFormGroup.get('startDate')?.value ?? null;
-  //   if (startDate === null) {
-  //     console.log('startDate is null');
-  //     return;
-  //   }
-  //   const starDateLocate = new Date(startDate);
-  //   console.log(starDateLocate.toLocaleDateString());
-  // }
+  get formControls() {
+    return this.registerFormGroup.value;
+  }
 
 }

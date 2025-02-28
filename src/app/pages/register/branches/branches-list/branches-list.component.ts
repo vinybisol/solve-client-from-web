@@ -1,25 +1,41 @@
-import { Component, OnInit, viewChild } from '@angular/core';
-import { BranchesFormComponent } from '../branches-form/branches-form.component';
-import { CommonModule, NgComponentOutlet } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { Component, ComponentRef, OnInit, viewChild, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
+import { BranchesFormComponent } from '../branches-form/branches-form.component';
+
 @Component({
   selector: 'app-branches-list',
-  imports: [CommonModule, NgComponentOutlet, MatButtonModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatCardModule],
   templateUrl: './branches-list.component.html',
   styleUrl: './branches-list.component.scss'
 })
 export class BranchesListComponent implements OnInit {
-  public branchesForm: { new(): BranchesFormComponent }[] = [];
+  vcr = viewChild('container', { read: ViewContainerRef });
+  components: BranchesFormComponent[] = [];
 
-  async ngOnInit(): Promise<void> {
-    await this.addBranch();
+  ngOnInit(): void {
+    this.addBranch();
   }
 
   async addBranch() {
-    const { BranchesFormComponent } = await import('../branches-form/branches-form.component');
-    this.branchesForm?.push(BranchesFormComponent);
+    const componentRef = this.vcr()?.createComponent(BranchesFormComponent);
+    //se inscreve no evento close do componente
+    componentRef?.instance?.close.subscribe(() => this.removeBranch(componentRef));
+
+    this.components.push(componentRef?.instance!);
   }
 
+  removeBranch(componentRef: ComponentRef<BranchesFormComponent>): void {
+    const index = this.vcr()?.indexOf(componentRef.hostView);
+    if (index !== -1) {
+      this.vcr()?.remove(index);
+      this.components.splice(index!, 1);
+    }
+  }
+  get formControls() {
+    return this.components.map((component) => component.formControls);
+  }
 }
+

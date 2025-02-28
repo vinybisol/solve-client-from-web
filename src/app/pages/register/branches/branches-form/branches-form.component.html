@@ -1,4 +1,7 @@
 <mat-card appearance="outlined">
+    <mat-card-actions>
+        <button mat-button (click)="close.emit()">Remover filial</button>
+    </mat-card-actions>
     <mat-card-content>
         <form class="form" [formGroup]="registerFormGroup">
             <mat-form-field>
