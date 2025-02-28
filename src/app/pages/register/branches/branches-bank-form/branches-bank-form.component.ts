@@ -20,4 +20,8 @@ export class BranchesBankFormComponent {
     bankManagerName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     bankMangerPhone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
   })
+
+  get formControls() {
+    return this.registerFormGroup.value;
+  }
 }

@@ -1,10 +1,11 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BranchesBankFormComponent } from "../branches-bank-form/branches-bank-form.component";
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+
+import { BranchesBankFormComponent } from '../branches-bank-form/branches-bank-form.component';
 
 @Component({
   selector: 'app-branches-form',
@@ -13,9 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './branches-form.component.scss'
 })
 export class BranchesFormComponent {
-  constructor() {
+  @ViewChild(BranchesBankFormComponent) bankForm: BranchesBankFormComponent | null = null;
 
-  }
   private formBuilder = inject(FormBuilder);
 
   registerFormGroup = this.formBuilder.group({
@@ -29,9 +29,12 @@ export class BranchesFormComponent {
     branchEmail: ['', [Validators.required, Validators.email]],
     branchLaw: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     branchROT: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    branchBank: this.bankForm?.formControls
   })
 
   get formControls() {
+    const bankControls = this.bankForm?.formControls
+    this.registerFormGroup.patchValue({ branchBank: bankControls })
     return this.registerFormGroup.value;
   }
 
