@@ -11,6 +11,16 @@
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <mat-form-field>
+                <mat-label>Vendedor</mat-label>
+                <input matInput formControlName="saller">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Start" formControlName="startType">
+                    <mat-option value="Presencial">Presencial</mat-option>
+                    <mat-option value="Remoto">Remoto</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
                 <mat-label>Nome do sistema</mat-label>
                 <input matInput formControlName="systemConversion">
             </mat-form-field>

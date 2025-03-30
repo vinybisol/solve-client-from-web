@@ -51,6 +51,8 @@ export class RegisterComponent {
       let content = '';
       content += '----------------------------------------------------------------------------------------------------\n';
       content += 'Start Date: ' + localDateString + '\n';
+      content += 'Vendedor: ' + generalData.saller + '\n';
+      content += 'Start: ' + generalData.startType + '\n';
       content += 'Nome do sistema: ' + generalData.systemConversion + '\n';
       content += 'Dados para converter: ' + generalData.conversionData + '\n';
       content += 'Link da base: ' + generalData.databaseLink + '\n';
