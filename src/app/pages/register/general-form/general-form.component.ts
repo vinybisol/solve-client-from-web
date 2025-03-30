@@ -1,7 +1,7 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
   imports: [MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDatepickerModule, MatCardModule],
   templateUrl: './general-form.component.html',
   styleUrl: './general-form.component.scss',
-  providers: [provideNativeDateAdapter()]
+  providers: [provideNativeDateAdapter(), { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class GeneralFormComponent {
   private formBuilder = inject(FormBuilder);

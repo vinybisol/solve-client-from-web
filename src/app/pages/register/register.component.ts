@@ -40,11 +40,17 @@ export class RegisterComponent {
     const branchesData = this.branchesLists?.formControls;
     const otherInformationsData = this.otherInformationsForms?.formControls;
 
+    let localDateString = null;
+    if (generalData?.startDate) {
+      const localDate = new Date(generalData?.startDate);
+      localDateString = localDate.toLocaleDateString('pt-BR')
+    }
+
     if (generalData && accountingData && branchesData && otherInformationsData) {
 
       let content = '';
       content += '----------------------------------------------------------------------------------------------------\n';
-      content += 'Start Date: ' + generalData.startDate + '\n';
+      content += 'Start Date: ' + localDateString + '\n';
       content += 'Nome do sistema: ' + generalData.systemConversion + '\n';
       content += 'Dados para converter: ' + generalData.conversionData + '\n';
       content += 'Link da base: ' + generalData.databaseLink + '\n';
