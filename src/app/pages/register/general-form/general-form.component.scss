@@ -4,3 +4,15 @@
     flex-wrap: wrap;
     justify-content: space-around;
 }
+
+.mat-checkbox-container {
+    height: 60px;
+    width: 400px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+    background-color: #E0E2EC;
+}
+
+.mat-checkbox-title {
+    padding: 10px;
+}
