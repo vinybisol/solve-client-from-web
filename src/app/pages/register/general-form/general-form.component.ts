@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -15,19 +15,6 @@ import { MatInputModule } from '@angular/material/input';
   providers: [provideNativeDateAdapter(), { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class GeneralFormComponent {
-  private formBuilder = inject(FormBuilder);
 
-  registerFormGroup = this.formBuilder.group({
-    startDate: [new Date().toISOString(), [Validators.required]],
-    saller: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    startType: [''],
-    systemConversion: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    conversionData: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    databaseLink: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-  });
-
-  get formControls() {
-    return this.registerFormGroup.value;
-  }
-
+  @Input() generalForm!: FormGroup;
 }
