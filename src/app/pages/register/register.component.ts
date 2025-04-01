@@ -19,6 +19,7 @@ import RegisterInterface from './interfaces/register-interface';
   animations: []
 })
 export class RegisterComponent implements OnInit {
+  @ViewChild(BranchesListComponent) branchesLists: BranchesListComponent | undefined;
   public myform!: FormGroup<RegisterInterface>;
   private formBuilder = inject(FormBuilder);
   private registerService = inject(RegisterService);
@@ -73,7 +74,7 @@ export class RegisterComponent implements OnInit {
     content += 'Start Date: ' + localDateString + '\n';
     content += 'Vendedor: ' + this.myform?.value?.saller + '\n';
     content += 'Start: ' + this.myform?.value?.startType + '\n';
-    content += 'Nome do sistema: ' + this.myform?.value?.systemConversion + '\n';
+    content += 'Nome do sistema atual: ' + this.myform?.value?.systemConversion + '\n';
     content += 'Dados para converter: ' + this.myform?.value?.conversionData + '\n';
     content += 'Link da base: ' + this.myform?.value?.databaseLink + '\n';
     content += '----------------------------------------------------------------------------------------------------\n';
@@ -84,24 +85,24 @@ export class RegisterComponent implements OnInit {
     content += 'CRC: ' + this.myform?.value?.accounterCRC + '\n';
     content += 'Telefone: ' + this.myform?.value?.accountingPhone + '\n';
     content += 'E-mail: ' + this.myform?.value?.accountingEmail + '\n';
-    // this.branchesLists?.formControls.forEach((branch) => {
-    //   content += '----------------------------------------------------------------------------------------------------\n';
-    //   content += 'Numero da Filial: ' + branch.branchNumber + '\n';
-    //   content += 'CNPJ: ' + branch.branchCNPJ + '\n';
-    //   content += 'Nome da Filial: ' + branch.branchName + '\n';
-    //   content += 'Fantasia: ' + branch.branchFantasy + '\n';
-    //   content += 'ID: ' + branch.branchCSCID + '\n';
-    //   content += 'Token: ' + branch.branchCSCToken + '\n';
-    //   content += 'Telefone: ' + branch.branchPhone + '\n';
-    //   content += 'E-mail: ' + branch.branchEmail + '\n';
-    //   content += 'Regime Tributário: ' + branch.branchLaw + '\n';
-    //   content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
-    //   content += '----------------------------------------------------------------------------------------------------\n';
-    //   content += 'Agencia: ' + branch.branchBank?.bankAgency + '\n';
-    //   content += 'Conta: ' + branch.branchBank?.bankCheckingAccount + '\n';
-    //   content += 'Contato do Gerente: ' + branch.branchBank?.bankManagerName + '\n';
-    //   content += 'Nome do Gerente: ' + branch.branchBank?.bankManagerName + '\n';
-    // });
+    this.branchesLists?.formControls.forEach((branch) => {
+      content += '----------------------------------------------------------------------------------------------------\n';
+      content += 'Numero da Filial: ' + branch.branchNumber + '\n';
+      content += 'CNPJ: ' + branch.branchCNPJ + '\n';
+      content += 'Nome da Filial: ' + branch.branchName + '\n';
+      content += 'Fantasia: ' + branch.branchFantasy + '\n';
+      content += 'ID: ' + branch.branchCSCID + '\n';
+      content += 'Token: ' + branch.branchCSCToken + '\n';
+      content += 'Telefone: ' + branch.branchPhone + '\n';
+      content += 'E-mail: ' + branch.branchEmail + '\n';
+      content += 'Regime Tributário: ' + branch.branchLaw + '\n';
+      content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
+      content += '----------------------------------------------------------------------------------------------------\n';
+      content += 'Agencia: ' + branch.bankAgency + '\n';
+      content += 'Conta: ' + branch.bankCheckingAccount + '\n';
+      content += 'Contato do Gerente: ' + branch.bankManagerName + '\n';
+      content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
+    });
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Certificado Digital: ' + this.myform?.value?.digitalCertificate + '\n';
     content += 'Senha do Certificado Digital: ' + this.myform?.value?.digitalCertificatePassword + '\n';
