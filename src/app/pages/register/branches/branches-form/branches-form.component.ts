@@ -1,24 +1,25 @@
-import { Component, inject, output, signal, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BranchesBankFormComponent } from '../branches-bank-form/branches-bank-form.component';
 import { BranchService } from '../services/branch.service';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-branches-form',
-  imports: [MatInputModule, MatIconModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent, MatCardModule, MatProgressBarModule],
+  imports: [CommonModule, MatInputModule, MatIconModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent, MatCardModule, MatProgressBarModule],
   templateUrl: './branches-form.component.html',
   styleUrl: './branches-form.component.scss'
 })
 export class BranchesFormComponent {
-  @ViewChild(BranchesBankFormComponent) bankForm: BranchesBankFormComponent | null = null;
+  close = output<void>();
 
   activeProgressBar = signal<boolean>(false);
 
@@ -37,16 +38,18 @@ export class BranchesFormComponent {
     branchEmail: ['', [Validators.required, Validators.email]],
     branchLaw: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     branchROT: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    branchBank: this.bankForm?.formControls
+
+    //Bank Form
+    bankNumber: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]],
+    bankAgency: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+    bankCheckingAccount: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    bankManagerName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    bankMangerPhone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
   })
 
   get formControls() {
-    const bankControls = this.bankForm?.formControls
-    this.registerFormGroup.patchValue({ branchBank: bankControls })
     return this.registerFormGroup.value;
   }
-
-  close = output<void>();
 
   onCNPJLoad() {
     this.activeProgressBar.set(true);
