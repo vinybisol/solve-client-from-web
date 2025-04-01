@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
@@ -18,7 +18,7 @@ import RegisterInterface from './interfaces/register-interface';
   styleUrl: './register.component.scss',
   animations: []
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   @ViewChild(BranchesListComponent) branchesLists: BranchesListComponent | undefined;
   public myform!: FormGroup<RegisterInterface>;
   private formBuilder = inject(FormBuilder);
@@ -31,6 +31,9 @@ export class RegisterComponent implements OnInit {
       saller: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       startType: this.formBuilder.control<string>(''),
       systemConversion: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      whatConverterClients: this.formBuilder.control<boolean>(false),
+      whatConverterProducts: this.formBuilder.control<boolean>(false),
+      whatConverterSuppliers: this.formBuilder.control<boolean>(false),
       conversionData: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       databaseLink: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
 
@@ -75,7 +78,7 @@ export class RegisterComponent implements OnInit {
     content += 'Vendedor: ' + this.myform?.value?.saller + '\n';
     content += 'Start: ' + this.myform?.value?.startType + '\n';
     content += 'Nome do sistema atual: ' + this.myform?.value?.systemConversion + '\n';
-    content += 'Dados para converter: ' + this.myform?.value?.conversionData + '\n';
+    content += 'Dados para converter: ' + this.getDataToConvert() + '\n';
     content += 'Link da base: ' + this.myform?.value?.databaseLink + '\n';
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Nome da Contabilidade: ' + this.myform?.value?.accounterName + '\n';
@@ -114,5 +117,26 @@ export class RegisterComponent implements OnInit {
     content += 'Email: ' + this.myform?.value?.propertyOwnerEmail + '\n';
 
     this.registerService.downloadStringAsFile(content);
+  }
+
+  getDataToConvert(): string {
+    const hasClients = this.myform?.value?.whatConverterClients === true ? 'Clientes' : '';
+    const hasProducts = this.myform?.value?.whatConverterProducts === true ? 'Produtos' : '';
+    const hasSuppliers = this.myform?.value?.whatConverterSuppliers === true ? 'Fornecedores' : '';
+
+    let ret = '';
+    if (hasClients) {
+      ret += hasClients;
+    }
+    if (hasProducts) {
+      ret += (ret.length > 0 ? ', ' : '') + hasProducts;
+    }
+    if (hasSuppliers) {
+      ret += (ret.length > 0 ? ', ' : '') + hasSuppliers;
+    }
+    if (ret.length > 0) {
+      return ret;
+    }
+    return '';
   }
 }

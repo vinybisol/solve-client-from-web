@@ -24,6 +24,20 @@
                 <mat-label>Nome do sistema</mat-label>
                 <input matInput formControlName="systemConversion">
             </mat-form-field>
+            <div class="mat-checkbox-container">
+                <mat-label class="mat-checkbox-title">Dados para conversão</mat-label>
+                <div>
+                    <mat-checkbox formControlName="whatConverterClients">
+                        Clientes
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="whatConverterProducts">
+                        Produtos
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="whatConverterSuppliers">
+                        Fornecedores
+                    </mat-checkbox>
+                </div>
+            </div>
             <mat-form-field>
                 <mat-label>Dados para conversão</mat-label>
                 <input matInput formControlName="systemConversion">
@@ -34,4 +48,5 @@
             </mat-form-field>
         </form>
     </mat-card-content>
+    <pre>{{ generalForm.value | json }}</pre>
 </mat-card>
