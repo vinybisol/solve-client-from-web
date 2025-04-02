@@ -4,6 +4,8 @@
     </mat-card-header>
     <mat-card-content>
         <ng-container #container></ng-container>
+        @if (isSingleBranch) {
         <button mat-button (click)="addBranch()">Adicionar filial</button>
+        }
     </mat-card-content>
 </mat-card>

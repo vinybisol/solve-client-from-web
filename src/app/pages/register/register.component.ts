@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
@@ -19,6 +19,7 @@ import RegisterInterface from './interfaces/register-interface';
   animations: []
 })
 export class RegisterComponent {
+  public isSingleBranch = signal<boolean>(false);
   @ViewChild(BranchesListComponent) branchesLists: BranchesListComponent | undefined;
   public myform!: FormGroup<RegisterInterface>;
   private formBuilder = inject(FormBuilder);
@@ -37,6 +38,7 @@ export class RegisterComponent {
       whatConverterSuppliers: this.formBuilder.control<boolean>(false),
       conversionData: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       databaseLink: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      typeConversion: this.formBuilder.control<string>('posto', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
 
       //accountingForm
       accountingName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -57,6 +59,22 @@ export class RegisterComponent {
       otherInformations: this.formBuilder.control<string>(''),
     });
 
+  }
+
+  onFormChange(): void {
+    this.myform.valueChanges.subscribe((changes) => {
+      const typeConversion = changes.typeConversion;
+      if (typeConversion === 'posto') {
+        this.isSingleBranch.set(false);
+      }
+      else {
+        this.isSingleBranch.set(true);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.onFormChange();
   }
 
 

@@ -6,6 +6,7 @@ export default interface RegisterInterface {
     startType: FormControl<string | null>;
     systemConversion: FormControl<string | null>;
     linkConversion: FormControl<string | null>;
+    typeConversion: FormControl<string | null>;
     whatConverterProducts: FormControl<boolean | null>;
     whatConverterClients: FormControl<boolean | null>;
     whatConverterSuppliers: FormControl<boolean | null>;

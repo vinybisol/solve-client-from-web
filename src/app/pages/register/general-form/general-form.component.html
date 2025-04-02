@@ -42,6 +42,12 @@
                 <mat-label>Link base ou dados para conversão:</mat-label>
                 <input matInput formControlName="linkConversion">
             </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Tipo de sistema" formControlName="typeConversion">
+                    <mat-option value="posto" selected>Posto Simples</mat-option>
+                    <mat-option value="central">Central</mat-option>
+                </mat-select>
+            </mat-form-field>
             <mat-form-field class="textarea">
                 <mat-label>OBS conversão</mat-label>
                 <textarea matInput formControlName="systemConversion"></textarea>
