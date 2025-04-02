@@ -31,6 +31,7 @@ export class RegisterComponent {
       saller: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       startType: this.formBuilder.control<string>(''),
       systemConversion: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      linkConversion: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       whatConverterClients: this.formBuilder.control<boolean>(false),
       whatConverterProducts: this.formBuilder.control<boolean>(false),
       whatConverterSuppliers: this.formBuilder.control<boolean>(false),

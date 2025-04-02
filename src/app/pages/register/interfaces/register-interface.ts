@@ -5,6 +5,7 @@ export default interface RegisterInterface {
     saller: FormControl<string | null>;
     startType: FormControl<string | null>;
     systemConversion: FormControl<string | null>;
+    linkConversion: FormControl<string | null>;
     whatConverterProducts: FormControl<boolean | null>;
     whatConverterClients: FormControl<boolean | null>;
     whatConverterSuppliers: FormControl<boolean | null>;
