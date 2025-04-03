@@ -1,13 +1,16 @@
 <mat-card appearance="outlined">
     <mat-card-actions>
+        @if (isSingleBranch) {
         <button mat-button (click)="close.emit()">Remover filial</button>
+        }
     </mat-card-actions>
     <mat-card-content>
         <form class="form" [formGroup]="registerFormGroup">
-            <mat-form-field>
+            @if (isSingleBranch) { <mat-form-field>
                 <mat-label>Numero da filial</mat-label>
                 <input type="number" matInput formControlName="branchNumber">
-            </mat-form-field>
+            </mat-form-field>}
+
             <mat-form-field>
                 <mat-label>CNPJ</mat-label>
                 <input type="number" matInput formControlName="branchCNPJ">

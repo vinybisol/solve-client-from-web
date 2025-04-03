@@ -39,14 +39,19 @@
                 </div>
             </div>
             <mat-form-field>
-                <mat-label>Dados para conversão</mat-label>
-                <input matInput formControlName="systemConversion">
+                <mat-label>Link base ou dados para conversão:</mat-label>
+                <input matInput formControlName="linkConversion">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Link base ou dados para conversão:</mat-label>
-                <input matInput formControlName="systemConversion">
+                <mat-select placeholder="Tipo de sistema" formControlName="typeConversion">
+                    <mat-option value="posto" selected>Posto Simples</mat-option>
+                    <mat-option value="central">Central</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="textarea">
+                <mat-label>OBS conversão</mat-label>
+                <textarea matInput formControlName="conversionDataObservation"></textarea>
             </mat-form-field>
         </form>
     </mat-card-content>
-    <pre>{{ generalForm.value | json }}</pre>
 </mat-card>
