@@ -36,8 +36,7 @@ export class RegisterComponent {
       whatConverterClients: this.formBuilder.control<boolean>(false),
       whatConverterProducts: this.formBuilder.control<boolean>(false),
       whatConverterSuppliers: this.formBuilder.control<boolean>(false),
-      conversionData: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      databaseLink: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      conversionDataObservation: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       typeConversion: this.formBuilder.control<string>('posto', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
 
       //accountingForm
@@ -50,9 +49,6 @@ export class RegisterComponent {
       accountingEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
 
       //otherInformations Form
-      digitalCertificate: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
-      digitalCertificatePassword: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
-      socialContract: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
       propertyOwnerName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       propertyOwnerPhone: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]),
       propertyOwnerEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
@@ -96,9 +92,11 @@ export class RegisterComponent {
     content += 'Start Date: ' + localDateString + '\n';
     content += 'Vendedor: ' + this.myform?.value?.saller + '\n';
     content += 'Start: ' + this.myform?.value?.startType + '\n';
-    content += 'Nome do sistema atual: ' + this.myform?.value?.systemConversion + '\n';
-    content += 'Dados para converter: ' + this.getDataToConvert() + '\n';
-    content += 'Link da base: ' + this.myform?.value?.databaseLink + '\n';
+    content += 'Conversão sistema: ' + this.myform?.value?.systemConversion + '\n';
+    content += 'Importar dados: ' + this.getDataToConvert() + '\n';
+    content += 'OBS Conversão: ' + this.myform?.value?.conversionDataObservation + '\n';
+    content += 'Link base, ou dados para conversão: ' + this.myform?.value?.linkConversion + '\n';
+    content += this.getSingleOuCentralized() + '\n';
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Nome da Contabilidade: ' + this.myform?.value?.accounterName + '\n';
     content += 'CNPJ: ' + this.myform?.value?.accountingCNPJ + '\n';
@@ -126,16 +124,23 @@ export class RegisterComponent {
       content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
     });
     content += '----------------------------------------------------------------------------------------------------\n';
-    content += 'Certificado Digital: ' + this.myform?.value?.digitalCertificate + '\n';
-    content += 'Senha do Certificado Digital: ' + this.myform?.value?.digitalCertificatePassword + '\n';
-    content += 'Contrato Social:' + this.myform?.value?.socialContract + '\n';
-    content += 'Certificado Digital: ' + this.myform?.value?.digitalCertificate + '\n';
-    content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Logotipo\n';
     content += 'Contato do Proprietário: ' + this.myform?.value?.propertyOwnerPhone + '\n';
     content += 'Email: ' + this.myform?.value?.propertyOwnerEmail + '\n';
 
     this.registerService.downloadStringAsFile(content);
+  }
+
+  getSingleOuCentralized(): string {
+    if (this.myform?.value?.typeConversion === 'posto') {
+      return 'Posto Simples';
+    }
+    const numberOfBranches = this.branchesLists?.formControls.length || 0;
+    let text = `Central com ${numberOfBranches} unidades de negocio`;
+    this.branchesLists?.formControls.forEach((branch) => {
+      text += `\nF${branch.branchNumber} - ${branch.branchCNPJ}`;
+    });
+    return text;
   }
 
   getDataToConvert(): string {
