@@ -32,6 +32,89 @@
                 <mat-label>Outras informações</mat-label>
                 <textarea matInput formControlName="otherInformations"></textarea>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Tef</mat-label>
+                <mat-select placeholder="TEF" formControlName="otherInformations" (valueChange)="onChange($event)">
+                    <mat-option value="no">Não</mat-option>
+                    <mat-option value="yes">Sim</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if (hasAdiquitente()) {
+            <mat-form-field>
+                <mat-label>Adquirente</mat-label>
+                <input type="text" matInput formControlName="otherInformations">
+            </mat-form-field>
+
+            <div class="mat-checkbox-container">
+                <mat-label class="mat-checkbox-title">Dados para conversão</mat-label>
+                <div>
+                    <mat-checkbox formControlName="otherInformations">
+                        Clientes
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Produtos
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Fornecedores
+                    </mat-checkbox>
+                </div>
+            </div>
+            }
+            <mat-form-field>
+                <mat-label>Pix Integrado</mat-label>
+                <mat-select placeholder="Pix Integrado" formControlName="otherInformations"
+                    (valueChange)="onChangePix($event)">
+                    <mat-option value="no">Não</mat-option>
+                    <mat-option value="yes">Sim</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if (hasPixIntegraded()) {
+            <mat-form-field>
+                <input type="text" readonly="true" matInput formControlName="otherInformations" value="SIM Verde Card">
+            </mat-form-field>
+            }
+            <div class="mat-checkboxModulo-container">
+                <mat-label class="mat-checkbox-title">Módulos Argo</mat-label>
+                <div>
+                    <mat-checkbox formControlName="otherInformations">
+                        Argo 360 Customizado
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Argo 360
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Portal do Cliente
+                    </mat-checkbox>
+                </div>
+            </div>
+            <div class="mat-checkboxDistribuidoras-container">
+                <mat-label class="mat-checkbox-title">Módulos Distribuidora</mat-label>
+                <div>
+                    <mat-checkbox formControlName="otherInformations">
+                        Ipiranga Am/Pm
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Ipiranga Pista
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Ipiranga Pró Frotas
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Ipiranga Jet Oil
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Shell Box
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="otherInformations">
+                        Shell Select
+                    </mat-checkbox>
+                </div>
+            </div>
+            <mat-form-field class="textarea">
+                <mat-label>OBS Distribuidora</mat-label>
+                <textarea matInput formControlName="conversionDataObservation"></textarea>
+            </mat-form-field>
         </form>
+        <pre>{{otherForm.value| json}}</pre>
     </mat-card-content>
 </mat-card>

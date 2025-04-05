@@ -3,11 +3,14 @@
         <button mat-button (click)="close.emit()">Remover filial</button>
     </mat-card-actions>
     <mat-card-content>
-        <form class="form" [formGroup]="registerFormGroup">
+        <form class="form" [formGroup]="branchForm">
+            @if (isSingleBranch)
+            {
             <mat-form-field>
                 <mat-label>Numero da filial</mat-label>
                 <input type="number" matInput formControlName="branchNumber">
             </mat-form-field>
+            }
             <mat-form-field>
                 <mat-label>CNPJ</mat-label>
                 <input type="number" matInput formControlName="branchCNPJ">
@@ -22,7 +25,7 @@
                 <mat-label>Razão social</mat-label>
                 <input type="text" matInput formControlName="branchName">
             </mat-form-field>
-            <mat-form-field>
+            <!-- <mat-form-field>
                 <mat-label>Nome fantasia</mat-label>
                 <input type="text" matInput formControlName="branchFantasy">
             </mat-form-field>
@@ -49,7 +52,7 @@
             <mat-form-field>
                 <mat-label>Participante do ROT</mat-label>
                 <input type="text" matInput formControlName="branchROT">
-            </mat-form-field>
+            </mat-form-field> -->
         </form>
         <app-branches-bank-form [bankForm]="registerFormGroup"></app-branches-bank-form>
     </mat-card-content>

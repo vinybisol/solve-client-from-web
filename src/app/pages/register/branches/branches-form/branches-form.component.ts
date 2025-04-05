@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +19,9 @@ import { BranchService } from '../services/branch.service';
   styleUrl: './branches-form.component.scss'
 })
 export class BranchesFormComponent {
+  @Input() isSingleBranch: boolean = false;
+  @Input() branchForm!: FormGroup;
+
   close = output<void>();
 
   activeProgressBar = signal<boolean>(false);

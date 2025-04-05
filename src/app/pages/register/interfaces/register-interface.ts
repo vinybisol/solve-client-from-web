@@ -8,8 +8,8 @@ export default interface RegisterInterface {
     whatConverterProducts: FormControl<boolean | null>;
     whatConverterClients: FormControl<boolean | null>;
     whatConverterSuppliers: FormControl<boolean | null>;
-    conversionData: FormControl<string | null>;
-    databaseLink: FormControl<string | null>;
+    conversionDataObservation: FormControl<string | null>;
+    branchNumber: FormControl<string | null>;
     accountingName: FormControl<string | null>;
     accountingCNPJ: FormControl<string | null>;
     accounterName: FormControl<string | null>;
