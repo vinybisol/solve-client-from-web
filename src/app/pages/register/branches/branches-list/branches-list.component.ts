@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ComponentRef, Input, OnChanges, OnInit, SimpleChanges, viewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, input, Input, OnChanges, OnInit, SimpleChanges, viewChild, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { BranchesFormComponent } from '../branches-form/branches-form.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-branches-list',
@@ -13,14 +14,12 @@ import { BranchesFormComponent } from '../branches-form/branches-form.component'
 })
 export class BranchesListComponent implements OnChanges {
 
+  @Input() branchForm!: FormGroup;
   @Input() isSingleBranch: boolean = true;
 
   vcr = viewChild('container', { read: ViewContainerRef });
   components: BranchesFormComponent[] = [];
 
-  ngOnInit(): void {
-    //this.addBranch();
-  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isSingleBranch']) {
       this.components.forEach(f => f.close.emit());
@@ -32,6 +31,7 @@ export class BranchesListComponent implements OnChanges {
   async addBranch() {
     const componentRef = this.vcr()?.createComponent(BranchesFormComponent);
     componentRef?.setInput('isSingleBranch', this.isSingleBranch);
+    componentRef?.setInput('branchForm', this.branchForm);
     //se inscreve no evento close do componente    
     componentRef?.instance?.close.subscribe(() => this.removeBranch(componentRef));
 

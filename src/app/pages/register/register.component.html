@@ -3,7 +3,7 @@
         <mat-card-content class="mat__card-content">
             <app-general-form [generalForm]="myform"></app-general-form>
             <app-accounting-form [accountingForm]="myform"></app-accounting-form>
-            <app-branches-list [isSingleBranch]="isSingleBranch()"></app-branches-list>
+            <app-branches-list [isSingleBranch]="isSingleBranch()" [branchForm]="myform"></app-branches-list>
             <app-other-informations-form [otherForm]="myform"></app-other-informations-form>
         </mat-card-content>
         <mat-card-actions>
