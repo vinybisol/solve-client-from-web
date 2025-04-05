@@ -11,6 +11,7 @@ export default interface RegisterInterface {
     whatConverterClients: FormControl<boolean | null>;
     whatConverterSuppliers: FormControl<boolean | null>;
     conversionDataObservation: FormControl<string | null>;
+    branchNumber: FormControl<string | null>;
     accountingName: FormControl<string | null>;
     accountingCNPJ: FormControl<string | null>;
     accounterName: FormControl<string | null>;
