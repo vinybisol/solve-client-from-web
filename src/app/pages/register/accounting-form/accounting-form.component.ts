@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, input, Input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './accounting-form.component.scss'
 })
 export class AccountingFormComponent {
-  @Input() accountingForm!: FormGroup;
+  accountingForm = input.required<FormGroup>();
 
   activeProgressBar = signal<boolean>(false);
   private branchService = inject(BranchService);
@@ -25,7 +25,7 @@ export class AccountingFormComponent {
 
   onCNPJLoad() {
     this.activeProgressBar.set(true);
-    const cnpj = this.accountingForm.get('accountingCNPJ')?.value;
+    const cnpj = this.accountingForm().get('accountingCNPJ')?.value;
     if (!cnpj) {
       this.activeProgressBar.set(false);
       return;
@@ -33,7 +33,7 @@ export class AccountingFormComponent {
 
     this.branchService.loadBranchData(cnpj).subscribe({
       next: (data) => {
-        this.accountingForm.patchValue({
+        this.accountingForm().patchValue({
           accountingName: data.razao_social,
           accountingPhone: data.estabelecimento.ddd1 + data.estabelecimento.telefone1,
           accountingEmail: data.estabelecimento.email,

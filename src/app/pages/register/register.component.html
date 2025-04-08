@@ -1,9 +1,18 @@
 <div class="container">
     <mat-card>
         <mat-card-content class="mat__card-content">
-            <app-general-form [generalForm]="myform"></app-general-form>
+            <app-general-form [generalForm]="myform"
+                (onChangeSingleBranch)="onChangeSingleBranchValue($event)"></app-general-form>
             <app-accounting-form [accountingForm]="myform"></app-accounting-form>
-            <app-branches-list [isSingleBranch]="isSingleBranch()" [branchForm]="myform"></app-branches-list>
+            <div formArrayName="branches" *ngFor="let branch of branches.controls; index as i; first as isFirst">
+                <app-branches-form [isSingleBranch]="isSingleBranch()" [branchForm]="branch"
+                    (removeBranch)="removeBranch($event)" [index]="i"></app-branches-form>
+            </div>
+            @if (isSingleBranch() === false) {
+            <mat-card-actions>
+                <button mat-button (click)="addBranch()">Adicionar filial</button>
+            </mat-card-actions>
+            }
             <app-other-informations-form [otherForm]="myform"></app-other-informations-form>
         </mat-card-content>
         <mat-card-actions>

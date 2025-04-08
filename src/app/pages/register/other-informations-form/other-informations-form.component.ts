@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, signal } from '@angular/core';
+import { Component, input, Input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,9 +14,9 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './other-informations-form.component.scss'
 })
 export class OtherInformationsFormComponent {
-  @Input() otherForm!: FormGroup;
-  hasAdiquitente = signal(false);
-  hasPixIntegraded = signal(false);
+  public otherForm = input.required<FormGroup>();
+  public hasAdiquitente = signal(false);
+  public hasPixIntegraded = signal(false);
 
   onChange(event: any) {
     this.hasAdiquitente.set(event === 'yes');

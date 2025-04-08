@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnChanges, output, signal, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,44 +19,21 @@ import { BranchService } from '../services/branch.service';
   styleUrl: './branches-form.component.scss'
 })
 export class BranchesFormComponent {
-  @Input() isSingleBranch: boolean = false;
-  @Input() branchForm!: FormGroup;
+  isSingleBranch = input.required<boolean>();
+  branchForm = input.required<FormGroup>();
+  index = input.required<number>();
 
+  removeBranch = output<number>();
   close = output<void>();
 
   activeProgressBar = signal<boolean>(false);
-
-  private formBuilder = inject(FormBuilder);
   private branchService = inject(BranchService);
   private snackBar = inject(MatSnackBar);
 
-  registerFormGroup = this.formBuilder.group({
-    branchNumber: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]],
-    branchCNPJ: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-    branchName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    branchFantasy: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    branchCSCToken: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    branchCSCID: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(7)]],
-    branchPhone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
-    branchEmail: ['', [Validators.required, Validators.email]],
-    branchLaw: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    branchROT: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-
-    //Bank Form
-    bankNumber: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]],
-    bankAgency: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
-    bankCheckingAccount: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    bankManagerName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    bankMangerPhone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
-  })
-
-  get formControls() {
-    return this.registerFormGroup.value;
-  }
 
   onCNPJLoad() {
     this.activeProgressBar.set(true);
-    const cnpj = this.registerFormGroup.get('branchCNPJ')?.value;
+    const cnpj = this.branchForm().get('branchCNPJ')?.value;
     if (!cnpj) {
       this.activeProgressBar.set(false);
       return;
@@ -64,7 +41,7 @@ export class BranchesFormComponent {
 
     this.branchService.loadBranchData(cnpj).subscribe({
       next: (data) => {
-        this.registerFormGroup.patchValue({
+        this.branchForm().patchValue({
           branchName: data.razao_social,
           branchFantasy: data.estabelecimento.nome_fantasia
         });
@@ -78,6 +55,8 @@ export class BranchesFormComponent {
         });
       }
     });
-
+  }
+  onClickRemoveBranch(index: number): void {
+    this.removeBranch.emit(index);
   }
 }
