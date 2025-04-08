@@ -3,7 +3,7 @@
         <mat-card-title>Geral</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form class="form" [formGroup]="generalForm">
+        <form class="form" [formGroup]="generalForm()">
             <mat-form-field>
                 <mat-label>Data do start</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="startDate">
@@ -43,9 +43,10 @@
                 <input matInput formControlName="linkConversion">
             </mat-form-field>
             <mat-form-field>
-                <mat-select placeholder="Tipo de sistema" formControlName="typeConversion">
-                    <mat-option value="posto" selected>Posto Simples</mat-option>
-                    <mat-option value="central">Central</mat-option>
+                <mat-select placeholder="Tipo de sistema" formControlName="typeConversion"
+                    (selectionChange)="onChangeSingleBranchValue($event.value)">
+                    <mat-option value="true">Posto Simples</mat-option>
+                    <mat-option value="false">Central</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="textarea">

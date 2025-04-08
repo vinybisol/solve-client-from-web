@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { FormArray, FormControl, FormGroup } from "@angular/forms";
 
 export default interface RegisterInterface {
     startDate: FormControl<string | null>;
@@ -11,7 +11,7 @@ export default interface RegisterInterface {
     whatConverterClients: FormControl<boolean | null>;
     whatConverterSuppliers: FormControl<boolean | null>;
     conversionDataObservation: FormControl<string | null>;
-    branchNumber: FormControl<string | null>;
+    branches: FormArray<FormGroup<any>>;
     accountingName: FormControl<string | null>;
     accountingCNPJ: FormControl<string | null>;
     accounterName: FormControl<string | null>;

@@ -3,7 +3,7 @@
         <mat-card-title>Contabilidade</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form class="form" [formGroup]="accountingForm">
+        <form class="form" [formGroup]="accountingForm()">
             <mat-form-field>
                 <mat-label>Nome da Contabilidade</mat-label>
                 <input type="text" matInput formControlName="accountingName">

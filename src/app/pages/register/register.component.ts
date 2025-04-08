@@ -1,31 +1,33 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { AccountingFormComponent } from './accounting-form/accounting-form.component';
-import { BranchesListComponent } from './branches/branches-list/branches-list.component';
+import { BranchesFormComponent } from './branches/branches-form/branches-form.component';
 import { GeneralFormComponent } from './general-form/general-form.component';
+import RegisterInterface from './interfaces/register-interface';
 import { OtherInformationsFormComponent } from './other-informations-form/other-informations-form.component';
 import { RegisterService } from './service/register.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import RegisterInterface from './interfaces/register-interface';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, GeneralFormComponent, AccountingFormComponent, MatCardModule, BranchesListComponent, OtherInformationsFormComponent, MatButtonModule],
+  imports: [CommonModule, GeneralFormComponent, AccountingFormComponent, MatCardModule, OtherInformationsFormComponent, MatButtonModule, BranchesFormComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   animations: []
 })
 export class RegisterComponent {
-  public isSingleBranch = signal<boolean>(false);
-  @ViewChild(BranchesListComponent) branchesLists: BranchesListComponent | undefined;
-  public myform!: FormGroup<RegisterInterface>;
+  public isSingleBranch = signal<boolean>(true);
+  public myform: FormGroup<RegisterInterface>;
+  public branches: FormArray<FormGroup>;
+
   private formBuilder = inject(FormBuilder);
   private registerService = inject(RegisterService);
 
-  ngOnInit(): void {
+  constructor() {
+    this.branches = this.formBuilder.array(new Array<FormGroup>());
     this.myform = this.formBuilder.group<RegisterInterface>({
       //generalForm
       startDate: this.formBuilder.control<string>(new Date().toISOString(), [Validators.required]),
@@ -37,10 +39,10 @@ export class RegisterComponent {
       whatConverterProducts: this.formBuilder.control<boolean>(false),
       whatConverterSuppliers: this.formBuilder.control<boolean>(false),
       conversionDataObservation: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      typeConversion: this.formBuilder.control<string>('posto', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      typeConversion: this.formBuilder.control<string>('true', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
 
       //branchesForm
-      branchNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
+      branches: this.branches,
 
       //accountingForm
       accountingName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -58,37 +60,57 @@ export class RegisterComponent {
       otherInformations: this.formBuilder.control<string>(''),
     });
 
+    this.addBranch();
   }
 
-  onFormChange(): void {
-    this.myform.valueChanges.subscribe((changes) => {
-      const typeConversion = changes.typeConversion;
-      if (typeConversion === 'posto') {
-        this.isSingleBranch.set(false);
-      }
-      else {
-        this.isSingleBranch.set(true);
-      }
-    });
+  addBranch() {
+    this.branches.push(this.formBuilder.group({
+      id: this.formBuilder.control<string>('', []),
+      name: this.formBuilder.control<string>(''),
+      branchNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
+      branchCNPJ: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]),
+      branchName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchFantasy: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchCSCToken: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchCSCID: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(7)]),
+      branchPhone: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]),
+      branchEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
+      branchLaw: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchROT: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+
+      //Bank Form
+      bankNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]),
+      bankAgency: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
+      bankCheckingAccount: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      bankManagerName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      bankMangerPhone: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)])
+    }));
   }
 
-  ngAfterViewInit(): void {
-    this.onFormChange();
+  removeBranch(index: number) {
+    this.branches.removeAt(index);
   }
 
+  onChangeSingleBranchValue(isSingleBranch: boolean): void {
+    this.isSingleBranch.set(isSingleBranch);
+    this.replaceBranches();
+  }
+
+  replaceBranches() {
+    this.branches.clear();
+    this.addBranch();
+  }
 
   onReset() {
     window.location.reload();
   }
 
   onSave() {
-
     let localDateString = null;
     if (this.myform?.value?.startDate) {
       const localDate = new Date(this.myform?.value?.startDate);
       localDateString = localDate.toLocaleDateString('pt-BR')
     }
-
 
     let content = '';
     content += '----------------------------------------------------------------------------------------------------\n';
@@ -108,23 +130,24 @@ export class RegisterComponent {
     content += 'CRC: ' + this.myform?.value?.accounterCRC + '\n';
     content += 'Telefone: ' + this.myform?.value?.accountingPhone + '\n';
     content += 'E-mail: ' + this.myform?.value?.accountingEmail + '\n';
-    this.branchesLists?.formControls.forEach((branch) => {
+    this.branches?.controls.forEach((branch, index) => {
       content += '----------------------------------------------------------------------------------------------------\n';
-      content += 'Numero da Filial: ' + branch.branchNumber + '\n';
-      content += 'CNPJ: ' + branch.branchCNPJ + '\n';
-      content += 'Nome da Filial: ' + branch.branchName + '\n';
-      content += 'Fantasia: ' + branch.branchFantasy + '\n';
-      content += 'ID: ' + branch.branchCSCID + '\n';
-      content += 'Token: ' + branch.branchCSCToken + '\n';
-      content += 'Telefone: ' + branch.branchPhone + '\n';
-      content += 'E-mail: ' + branch.branchEmail + '\n';
-      content += 'Regime Tributário: ' + branch.branchLaw + '\n';
-      content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
-      content += '----------------------------------------------------------------------------------------------------\n';
-      content += 'Agencia: ' + branch.bankAgency + '\n';
-      content += 'Conta: ' + branch.bankCheckingAccount + '\n';
-      content += 'Contato do Gerente: ' + branch.bankManagerName + '\n';
-      content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
+      content += `aqui vai aparecer a lista das filiaid: ${index} \n`;
+      // content += 'Numero da Filial: ' + branch.branchNumber + '\n';
+      // content += 'CNPJ: ' + branch.branchCNPJ + '\n';
+      // content += 'Nome da Filial: ' + branch.branchName + '\n';
+      // content += 'Fantasia: ' + branch.branchFantasy + '\n';
+      // content += 'ID: ' + branch.branchCSCID + '\n';
+      // content += 'Token: ' + branch.branchCSCToken + '\n';
+      // content += 'Telefone: ' + branch.branchPhone + '\n';
+      // content += 'E-mail: ' + branch.branchEmail + '\n';
+      // content += 'Regime Tributário: ' + branch.branchLaw + '\n';
+      // content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
+      // content += '----------------------------------------------------------------------------------------------------\n';
+      // content += 'Agencia: ' + branch.bankAgency + '\n';
+      // content += 'Conta: ' + branch.bankCheckingAccount + '\n';
+      // content += 'Contato do Gerente: ' + branch.bankManagerName + '\n';
+      // content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
     });
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Logotipo\n';
@@ -138,11 +161,11 @@ export class RegisterComponent {
     if (this.myform?.value?.typeConversion === 'posto') {
       return 'Posto Simples';
     }
-    const numberOfBranches = this.branchesLists?.formControls.length || 0;
+    const numberOfBranches = 0;
     let text = `Central com ${numberOfBranches} unidades de negocio`;
-    this.branchesLists?.formControls.forEach((branch) => {
-      text += `\nF${branch.branchNumber} - ${branch.branchCNPJ}`;
-    });
+    // this.branchesLists?.formControls.forEach((branch) => {
+    //   text += `\nF${branch.branchNumber} - ${branch.branchCNPJ}`;
+    // });
     return text;
   }
 

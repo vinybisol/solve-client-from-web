@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input, Input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,5 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class GeneralFormComponent {
 
-  @Input() generalForm!: FormGroup;
+  public generalForm = input.required<FormGroup>();
+  onChangeSingleBranch = output<boolean>();
+
+  onChangeSingleBranchValue(event: string): void {
+    const value = event === 'true' ? true : false;
+    this.onChangeSingleBranch.emit(value);
+  }
 }
