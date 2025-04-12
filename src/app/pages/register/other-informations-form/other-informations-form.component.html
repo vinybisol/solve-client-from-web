@@ -16,91 +16,98 @@
                 <mat-label>E-mail Proprietario</mat-label>
                 <input type="email" matInput formControlName="propertyOwnerEmail">
             </mat-form-field>
-            <mat-form-field class="textarea">
-                <mat-label>Outras informações</mat-label>
-                <textarea matInput formControlName="otherInformations"></textarea>
-            </mat-form-field>
             <mat-form-field>
                 <mat-label>Tef</mat-label>
-                <mat-select placeholder="TEF" formControlName="otherInformations" (valueChange)="onChange($event)">
-                    <mat-option value="no">Não</mat-option>
-                    <mat-option value="yes">Sim</mat-option>
+                <mat-select placeholder="TEF" formControlName="hasTef" (valueChange)="onChange($event)">
+                    <mat-option [value]=false>Não</mat-option>
+                    <mat-option [value]=true>Sim</mat-option>
                 </mat-select>
             </mat-form-field>
             @if (hasAdiquitente()) {
             <mat-form-field>
                 <mat-label>Adquirente</mat-label>
-                <input type="text" matInput formControlName="otherInformations">
+                <input type="text" matInput formControlName="tefAdiquirente">
             </mat-form-field>
-
             <div class="mat-checkbox-container">
-                <mat-label class="mat-checkbox-title">Dados para conversão</mat-label>
-                <div>
-                    <mat-checkbox formControlName="otherInformations">
-                        Clientes
-                    </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
-                        Produtos
-                    </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
-                        Fornecedores
-                    </mat-checkbox>
+                <mat-label class="mat-checkbox-title">Filiais com tef</mat-label>
+                <div class="checkbox-container">
+                    @for (branch of allBranches; track $index) {
+                    <div formArrayName="branchesWithTef">
+                        <mat-checkbox [formControlName]="$index">
+                            F-{{ branch.number || $index + 1 }}
+                        </mat-checkbox>
+                    </div>
+                    }
                 </div>
             </div>
             }
             <mat-form-field>
                 <mat-label>Pix Integrado</mat-label>
-                <mat-select placeholder="Pix Integrado" formControlName="otherInformations"
-                    (valueChange)="onChangePix($event)">
-                    <mat-option value="no">Não</mat-option>
-                    <mat-option value="yes">Sim</mat-option>
+                <mat-select placeholder="Pix Integrado" formControlName="hasPix" (valueChange)="onChangePix($event)">
+                    <mat-option [value]=false>Não</mat-option>
+                    <mat-option [value]=true>Sim</mat-option>
                 </mat-select>
             </mat-form-field>
             @if (hasPixIntegraded()) {
-            <mat-form-field>
-                <input type="text" readonly="true" matInput formControlName="otherInformations" value="SIM Verde Card">
-            </mat-form-field>
+            <div class="mat-checkbox-container">
+                <mat-label class="mat-checkbox-title">SIM Verde Card</mat-label>
+                <div class="checkbox-container">
+                    @for (branch of allBranches; track $index) {
+                    <div formArrayName="branchesWithPix">
+                        <mat-checkbox [formControlName]="$index">
+                            F-{{ branch.number || $index + 1 }}
+                        </mat-checkbox>
+                    </div>
+                    }
+                </div>
+            </div>
             }
             <div class="mat-checkboxModulo-container">
                 <mat-label class="mat-checkbox-title">Módulos Argo</mat-label>
-                <div>
-                    <mat-checkbox formControlName="otherInformations">
+                <div formGroupName="argoModules">
+                    <mat-checkbox formControlName="argo360Custom">
                         Argo 360 Customizado
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="argo360">
                         Argo 360
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="customerPortal">
                         Portal do Cliente
                     </mat-checkbox>
                 </div>
             </div>
-            <div class="mat-checkboxDistribuidoras-container">
+            <div class="mat-checkbox-container">
                 <mat-label class="mat-checkbox-title">Módulos Distribuidora</mat-label>
-                <div>
-                    <mat-checkbox formControlName="otherInformations">
+                <div class="checkbox-container" formGroupName="argoModulesDistribution">
+                    <mat-checkbox formControlName="ipirangaAmPm">
                         Ipiranga Am/Pm
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="ipitangaPista">
                         Ipiranga Pista
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="ipirangaFrotas">
                         Ipiranga Pró Frotas
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="ipirangaJetOil">
                         Ipiranga Jet Oil
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="vibraGasStaion">
+                        Vibra Posto
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="vibraMania">
+                        Vibra Mania
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="shellBox">
                         Shell Box
                     </mat-checkbox>
-                    <mat-checkbox formControlName="otherInformations">
+                    <mat-checkbox formControlName="shellSelect">
                         Shell Select
                     </mat-checkbox>
                 </div>
             </div>
             <mat-form-field class="textarea">
                 <mat-label>OBS Distribuidora</mat-label>
-                <textarea matInput formControlName="conversionDataObservation"></textarea>
+                <textarea matInput formControlName="otherInformations"></textarea>
             </mat-form-field>
         </form>
     </mat-card-content>

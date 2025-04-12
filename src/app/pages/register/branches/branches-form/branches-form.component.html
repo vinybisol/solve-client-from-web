@@ -30,28 +30,86 @@
                 <input type="text" matInput formControlName="branchFantasy">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Token</mat-label>
-                <input type="text" matInput formControlName="branchCSCToken">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>ID</mat-label>
-                <input type="number" matInput formControlName="branchCSCID">
-            </mat-form-field>
-            <mat-form-field>
                 <mat-label>Telefone Cupom</mat-label>
                 <input type="tel" matInput formControlName="branchPhone">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>E-mail cobrança</mat-label>
-                <input type="email" matInput formControlName="branchEmail">
+                <mat-label>Cidade</mat-label>
+                <input type="text" matInput formControlName="branchCity">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Estado</mat-label>
+                <input type="text" matInput formControlName="branchState">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Regime Tributario</mat-label>
-                <input type="text" matInput formControlName="branchLaw">
+                <mat-select formControlName="branchLaw">
+                    <mat-option value="Lucro Real">Lucro Real </mat-option>
+                    <mat-option value="Lucro Presumido">Lucro Presumido</mat-option>
+                    <mat-option value="Simples Nacional">Simples Nacional</mat-option>
+                </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Participante do ROT</mat-label>
-                <input type="text" matInput formControlName="branchROT">
+                <mat-label>Tipo de filial</mat-label>
+                <mat-select formControlName="branchType" (selectionChange)="onBranchTypeChange($event.value)">
+                    <mat-option value="Posto">Posto</mat-option>
+                    <mat-option value="Loja">Loja</mat-option>
+                    <mat-option value="Outro">Outro</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if (isBranchOthers()) {
+            <mat-form-field>
+                <mat-label>Outro</mat-label>
+                <input type="text" matInput formControlName="branchTypeOthers">
+            </mat-form-field>
+            }
+            <mat-form-field>
+                <mat-label>Email para envio de Contrato</mat-label>
+                <mat-select (selectionChange)="onEmailContractChange($event.value)">
+                    <mat-option value="Same">Mesmo do Proprietário</mat-option>
+                    <mat-option value="Other">Outro</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if (isSameEmailContact()) {
+            <mat-form-field>
+                <mat-label>Outro</mat-label>
+                <input type="text" matInput formControlName="branchContactEmail">
+            </mat-form-field>
+            }
+            <mat-form-field>
+                <mat-label>Email para envio de Cobrança</mat-label>
+                <mat-select (selectionChange)="onEmailChargeChange($event.value)">
+                    <mat-option value="Same">Mesmo do Proprietário</mat-option>
+                    <mat-option value="Other">Outro</mat-option>
+                </mat-select>
+            </mat-form-field>
+            @if (isSameEmailCharge()) {
+            <mat-form-field>
+                <mat-label>Outro</mat-label>
+                <input type="text" matInput formControlName="branchChargeEmail">
+            </mat-form-field>
+            }
+            <mat-form-field>
+                <mat-label>Contrato Social </mat-label>
+                <mat-select formControlName="branchSocialContract">
+                    <mat-option [value]=true>Sim</mat-option>
+                    <mat-option [value]=false>Não</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Certificado Digital</mat-label>
+                <mat-select formControlName="branchDigitalCertified">
+                    <mat-option [value]=true>Sim</mat-option>
+                    <mat-option [value]=false>Não</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Logo</mat-label>
+                <mat-select formControlName="branchLogotype">
+                    <mat-option value="Sim">Sim</mat-option>
+                    <mat-option value="Não">Não</mat-option>
+                    <mat-option value="Same">Mesmo da Rede</mat-option>
+                </mat-select>
             </mat-form-field>
         </form>
         <app-branches-bank-form [bankForm]="branchForm()"></app-branches-bank-form>

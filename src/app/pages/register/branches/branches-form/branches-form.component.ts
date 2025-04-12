@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BranchesBankFormComponent } from '../branches-bank-form/branches-bank-form.component';
@@ -14,7 +15,7 @@ import { BranchService } from '../services/branch.service';
 
 @Component({
   selector: 'app-branches-form',
-  imports: [CommonModule, MatInputModule, MatIconModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent, MatCardModule, MatProgressBarModule],
+  imports: [CommonModule, MatInputModule, MatSelectModule, MatIconModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, BranchesBankFormComponent, MatCardModule, MatProgressBarModule],
   templateUrl: './branches-form.component.html',
   styleUrl: './branches-form.component.scss'
 })
@@ -27,6 +28,9 @@ export class BranchesFormComponent {
   close = output<void>();
 
   activeProgressBar = signal<boolean>(false);
+  protected isBranchOthers = signal(false);
+  protected isSameEmailContact = signal(false);
+  protected isSameEmailCharge = signal(false);
   private branchService = inject(BranchService);
   private snackBar = inject(MatSnackBar);
 
@@ -43,7 +47,9 @@ export class BranchesFormComponent {
       next: (data) => {
         this.branchForm().patchValue({
           branchName: data.razao_social,
-          branchFantasy: data.estabelecimento.nome_fantasia
+          branchFantasy: data.estabelecimento.nome_fantasia,
+          branchCity: data.estabelecimento.cidade.nome,
+          branchState: data.estabelecimento.estado.sigla,
         });
         this.activeProgressBar.set(false);
       },
@@ -56,7 +62,23 @@ export class BranchesFormComponent {
       }
     });
   }
+
   onClickRemoveBranch(index: number): void {
     this.removeBranch.emit(index);
+  }
+  onBranchTypeChange(value: string): void {
+    if (value === 'Outro') {
+      this.isBranchOthers.set(true);
+    } else {
+      this.isBranchOthers.set(false);
+    }
+  }
+
+  onEmailContractChange(value: string): void {
+    this.isSameEmailContact.set(value !== 'Same');
+  }
+  onEmailChargeChange(value: string): void {
+    this.isSameEmailCharge.set(value !== 'Same');
+
   }
 }
