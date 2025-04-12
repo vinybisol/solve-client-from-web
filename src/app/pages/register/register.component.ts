@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { AccountingFormComponent } from './accounting-form/accounting-form.component';
 import { BranchesFormComponent } from './branches/branches-form/branches-form.component';
 import { GeneralFormComponent } from './general-form/general-form.component';
-import RegisterInterface from './interfaces/register-interface';
-import { OtherInformationsFormComponent } from './other-informations-form/other-informations-form.component';
+import { ArgoModulesDistributionInterface, ArgoModulesInterface, BranchesInterface, RegisterInterface } from './interfaces/register-interface';
+import { BranchesWithPixOrTef, OtherInformationsFormComponent } from './other-informations-form/other-informations-form.component';
 import { RegisterService } from './service/register.service';
 
 @Component({
@@ -22,12 +22,14 @@ export class RegisterComponent {
   public isSingleBranch = signal<boolean>(true);
   public myform: FormGroup<RegisterInterface>;
   public branches: FormArray<FormGroup>;
+  public branchesWithTef: FormGroup;
 
   private formBuilder = inject(FormBuilder);
   private registerService = inject(RegisterService);
 
   constructor() {
-    this.branches = this.formBuilder.array(new Array<FormGroup>());
+    this.branches = this.formBuilder.array<FormGroup<BranchesInterface>>([]);
+    this.branchesWithTef = this.formBuilder.group<any>({});
     this.myform = this.formBuilder.group<RegisterInterface>({
       //generalForm
       startDate: this.formBuilder.control<string>(new Date().toISOString(), [Validators.required]),
@@ -58,25 +60,50 @@ export class RegisterComponent {
       propertyOwnerPhone: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]),
       propertyOwnerEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       otherInformations: this.formBuilder.control<string>(''),
+      hasTef: this.formBuilder.control<boolean>(false),
+      tefAdiquirente: this.formBuilder.control<string>(''),
+      branchesWithTef: this.formBuilder.group<any>([]),
+      hasPix: this.formBuilder.control<boolean>(false),
+      branchesWithPix: this.formBuilder.group<any>([]),
+      argoModules: this.formBuilder.group<ArgoModulesInterface>({
+        argo360Custom: this.formBuilder.control<boolean>(false),
+        argo360: this.formBuilder.control<boolean>(false),
+        customerPortal: this.formBuilder.control<boolean>(false),
+      }),
+      argoModulesDistribution: this.formBuilder.group<ArgoModulesDistributionInterface>({
+        ipirangaAmPm: this.formBuilder.control<boolean>(false),
+        ipitangaPista: this.formBuilder.control<boolean>(false),
+        ipirangaFrotas: this.formBuilder.control<boolean>(false),
+        ipirangaJetOil: this.formBuilder.control<boolean>(false),
+        vibraGasStaion: this.formBuilder.control<boolean>(false),
+        vibraMania: this.formBuilder.control<boolean>(false),
+        shellBox: this.formBuilder.control<boolean>(false),
+        shellSelect: this.formBuilder.control<boolean>(false),
+      }),
     });
 
     this.addBranch();
   }
 
   addBranch() {
-    this.branches.push(this.formBuilder.group({
+    this.branches.push(this.formBuilder.group<BranchesInterface>({
       id: this.formBuilder.control<string>('', []),
       name: this.formBuilder.control<string>(''),
       branchNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
       branchCNPJ: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]),
       branchName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       branchFantasy: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      branchCSCToken: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      branchCSCID: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(7)]),
+      branchCity: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchState: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]),
       branchPhone: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]),
-      branchEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
-      branchLaw: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-      branchROT: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      branchLaw: this.formBuilder.control<string>('Lucro Real'),
+      branchType: this.formBuilder.control<string>('Posto'),
+      branchTypeOthers: this.formBuilder.control<string>(''),
+      branchContactEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
+      branchChargeEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
+      branchSocialContract: this.formBuilder.control<boolean>(false),
+      branchDigitalCertified: this.formBuilder.control<boolean>(false),
+      branchLogotype: this.formBuilder.control<string>('Não'),
 
       //Bank Form
       bankNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]),
@@ -151,21 +178,121 @@ export class RegisterComponent {
     });
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Logotipo\n';
-    content += 'Contato do Proprietário: ' + this.myform?.value?.propertyOwnerPhone + '\n';
-    content += 'Email: ' + this.myform?.value?.propertyOwnerEmail + '\n';
+    content += 'Nome do Proprietário: ' + this.myform?.value?.propertyOwnerName + '\n';
+    content += 'Telefone do Proprietário: ' + this.myform?.value?.propertyOwnerPhone + '\n';
+    content += 'Email do Proprietário: ' + this.myform?.value?.propertyOwnerEmail + '\n';
+    content += this.getTef() + '\n';
+    content += this.getPix() + '\n';
+    content += this.getArgoModules() + '\n';
+    content += this.getArgoDistributionsModules() + '\n';
+    content += 'OBS Distribuidora: ' + this.myform?.value?.otherInformations + '\n';
+
+
 
     this.registerService.downloadStringAsFile(content);
   }
+  getArgoDistributionsModules() {
+    let text = 'Módulos Distribuidora: ';
+    const argoModulesDistribution = this.myform.get('argoModulesDistribution') as FormGroup<any>;
+    Object.keys(argoModulesDistribution.value).forEach((key) => {
+      if (argoModulesDistribution.value[key] === true) {
+        if (text.length > 23) {
+          text += ', ';
+        }
+        if (key === 'ipitangaPista') {
+          text += 'Ipiranga Pista';
+        } else if (key === 'ipirangaFrotas') {
+          text += 'Ipiranga Frotas';
+        } else if (key === 'ipirangaJetOil') {
+          text += 'Ipiranga Jet Oil';
+        } else if (key === 'shellBox') {
+          text += 'Shell Box';
+        } else if (key === 'shellSelect') {
+          text += 'Shell Select';
+        } else if (key === 'ipirangaAmPm') {
+          text += 'Ipiranga Am/Pm';
+        } else if (key === 'vibraGasStaion') {
+          text += 'Vibra Posto';
+        } else if (key === 'vibraMania') {
+          text += 'Vibra Mania';
+        }
+      }
+    });
+    return text;
+  }
+  getArgoModules() {
+    let text = 'Módulos Argo: ';
+    const argoModules = this.myform.get('argoModules') as FormGroup<any>;
+    Object.keys(argoModules.value).forEach((key) => {
+      if (argoModules.value[key] === true) {
+        if (text.length > 14) {
+          text += ', ';
+        }
+        if (key === 'argo360Custom') {
+          text += 'Argo 360 Customizado';
+        } else if (key === 'customerPortal') {
+          text += 'Portal do Cliente';
+        } else if (key === 'argo360') {
+          text += 'Argo 360';
+        }
+      }
+    });
+    return text;
+  }
+  getTef() {
+    const hasTef = this.myform?.value?.hasTef === true;
+    if (hasTef) {
+      let text = `TEF: Sim - `;
+      const branchesWithTef = this.myform.get('branchesWithTef') as FormGroup<any>;
+      Object.keys(branchesWithTef.value).forEach((key) => {
+        console.log(key, branchesWithTef.value[key]);
+        if (branchesWithTef.value[key] === true) {
+          const branch = this.branches?.controls[Number(key)];
+          const branchNumber = branch.get('branchNumber')?.value;
+          const number = branchNumber ? branchNumber : Number(key) + 1;
+          if (text.length > 12) {
+            text += ', ';
+          }
+          text += `F${number}`;
+        }
+      });
+      text += '\n';
+      text += `Adquirente: ${this.myform?.value?.tefAdiquirente}`;
+      return text;
+    }
+    return 'TEF: Não';
+  }
+  getPix() {
+    const hasPix = this.myform?.value?.hasPix === true;
+    if (hasPix) {
+      let text = `Pix Integrado: Sim - Verde Card - `;
+      const branchesWithPix = this.myform.get('branchesWithPix') as FormGroup<any>;
+      Object.keys(branchesWithPix.value).forEach((key) => {
+        console.log(key, branchesWithPix.value[key]);
+        if (branchesWithPix.value[key] === true) {
+          const branch = this.branches?.controls[Number(key)];
+          const branchNumber = branch.get('branchNumber')?.value;
+          const number = branchNumber ? branchNumber : Number(key) + 1;
+          if (text.length > 34) {
+            text += ', ';
+          }
+          text += `F${number}`;
+        }
+      });
+      return text;
+    }
+    return 'Pix Integrado: Não';
+  }
 
   getSingleOuCentralized(): string {
-    if (this.myform?.value?.typeConversion === 'posto') {
+    if (this.isSingleBranch()) {
       return 'Posto Simples';
     }
-    const numberOfBranches = 0;
-    let text = `Central com ${numberOfBranches} unidades de negocio`;
-    // this.branchesLists?.formControls.forEach((branch) => {
-    //   text += `\nF${branch.branchNumber} - ${branch.branchCNPJ}`;
-    // });
+
+    let text = `Central com ${this.branches.length} unidades de negocio`;
+    this.branches?.controls.forEach((branch) => {
+      text += `\nF${branch.get('branchNumber')?.value} - ${branch.get('branchName')?.value}`;
+    });
     return text;
   }
 
