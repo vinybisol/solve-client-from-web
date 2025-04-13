@@ -1,14 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { AccountingFormComponent } from './accounting-form/accounting-form.component';
 import { BranchesFormComponent } from './branches/branches-form/branches-form.component';
 import { GeneralFormComponent } from './general-form/general-form.component';
-import { ArgoModulesDistributionInterface, ArgoModulesInterface, BranchesInterface, RegisterInterface } from './interfaces/register-interface';
-import { BranchesWithPixOrTef, OtherInformationsFormComponent } from './other-informations-form/other-informations-form.component';
+import {
+  ArgoModulesDistributionInterface,
+  ArgoModulesInterface,
+  BranchesInterface,
+  RegisterInterface,
+} from './interfaces/register-interface';
+import { OtherInformationsFormComponent } from './other-informations-form/other-informations-form.component';
 import { RegisterService } from './service/register.service';
 
 @Component({
@@ -176,13 +181,6 @@ export class RegisterComponent {
       content += this.getDigitalCertified(branch.controls) + '\n';
       content += this.getSocialContract(branch.controls) + '\n';
       content += this.getLogoTipo(branch.controls) + '\n';
-
-      // content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
-      // content += '----------------------------------------------------------------------------------------------------\n';
-      // content += 'Agencia: ' + branch.bankAgency + '\n';
-      // content += 'Conta: ' + branch.bankCheckingAccount + '\n';
-      // content += 'Contato do Gerente: ' + branch.bankManagerName + '\n';
-      // content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
     });
     content += '----------------------------------------------------------------------------------------------------\n';
     content += 'Nome do Proprietário: ' + this.myform?.value?.propertyOwnerName + '\n';
