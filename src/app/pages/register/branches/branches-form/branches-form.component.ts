@@ -45,11 +45,16 @@ export class BranchesFormComponent {
 
     this.branchService.loadBranchData(cnpj).subscribe({
       next: (data) => {
+        let ie = '';
+        if (data.estabelecimento.inscricoes_estaduais.length > 0) {
+          ie = data.estabelecimento.inscricoes_estaduais[0].inscricao_estadual;
+        }
         this.branchForm().patchValue({
           branchName: data.razao_social,
           branchFantasy: data.estabelecimento.nome_fantasia,
           branchCity: data.estabelecimento.cidade.nome,
           branchState: data.estabelecimento.estado.sigla,
+          branchIE: ie
         });
         this.activeProgressBar.set(false);
       },
@@ -74,11 +79,10 @@ export class BranchesFormComponent {
     }
   }
 
-  onEmailContractChange(value: string): void {
-    this.isSameEmailContact.set(value !== 'Same');
+  onEmailContractChange(value: boolean): void {
+    this.isSameEmailContact.set(!value);
   }
-  onEmailChargeChange(value: string): void {
-    this.isSameEmailCharge.set(value !== 'Same');
-
+  onEmailChargeChange(value: boolean): void {
+    this.isSameEmailCharge.set(!value);
   }
 }
