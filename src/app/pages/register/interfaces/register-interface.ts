@@ -38,6 +38,7 @@ export interface BranchesInterface {
     name: FormControl<string | null>;
     branchNumber: FormControl<string | null>;
     branchCNPJ: FormControl<string | null>;
+    branchIE: FormControl<string | null>;
     branchName: FormControl<string | null>;
     branchFantasy: FormControl<string | null>;
     branchCity: FormControl<string | null>;
@@ -45,7 +46,9 @@ export interface BranchesInterface {
     branchPhone: FormControl<string | null>;
     branchType: FormControl<string | null>;
     branchTypeOthers: FormControl<string | null>;
+    isSameBranchContactEmail: FormControl<boolean | null>;
     branchContactEmail: FormControl<string | null>;
+    isSamebranchChargeEmail: FormControl<boolean | null>;
     branchChargeEmail: FormControl<string | null>;
     branchSocialContract: FormControl<boolean | null>;
     branchDigitalCertified: FormControl<boolean | null>;

@@ -21,7 +21,7 @@ import { RegisterService } from './service/register.service';
 export class RegisterComponent {
   public isSingleBranch = signal<boolean>(true);
   public myform: FormGroup<RegisterInterface>;
-  public branches: FormArray<FormGroup>;
+  public branches: FormArray<FormGroup<BranchesInterface>>;
   public branchesWithTef: FormGroup;
 
   private formBuilder = inject(FormBuilder);
@@ -91,6 +91,7 @@ export class RegisterComponent {
       name: this.formBuilder.control<string>(''),
       branchNumber: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
       branchCNPJ: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]),
+      branchIE: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       branchName: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       branchFantasy: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       branchCity: this.formBuilder.control<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -99,7 +100,9 @@ export class RegisterComponent {
       branchLaw: this.formBuilder.control<string>('Lucro Real'),
       branchType: this.formBuilder.control<string>('Posto'),
       branchTypeOthers: this.formBuilder.control<string>(''),
+      isSameBranchContactEmail: this.formBuilder.control<boolean>(true),
       branchContactEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
+      isSamebranchChargeEmail: this.formBuilder.control<boolean>(true),
       branchChargeEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       branchSocialContract: this.formBuilder.control<boolean>(false),
       branchDigitalCertified: this.formBuilder.control<boolean>(false),
@@ -159,16 +162,21 @@ export class RegisterComponent {
     content += 'E-mail: ' + this.myform?.value?.accountingEmail + '\n';
     this.branches?.controls.forEach((branch, index) => {
       content += '----------------------------------------------------------------------------------------------------\n';
-      content += `aqui vai aparecer a lista das filiaid: ${index} \n`;
-      // content += 'Numero da Filial: ' + branch.branchNumber + '\n';
-      // content += 'CNPJ: ' + branch.branchCNPJ + '\n';
-      // content += 'Nome da Filial: ' + branch.branchName + '\n';
-      // content += 'Fantasia: ' + branch.branchFantasy + '\n';
-      // content += 'ID: ' + branch.branchCSCID + '\n';
-      // content += 'Token: ' + branch.branchCSCToken + '\n';
-      // content += 'Telefone: ' + branch.branchPhone + '\n';
-      // content += 'E-mail: ' + branch.branchEmail + '\n';
-      // content += 'Regime Tributário: ' + branch.branchLaw + '\n';
+      content += 'F' + (branch.value.branchNumber ? branch.value.branchNumber : (index + 1).toString()) + '-Posto' + '\n';
+      content += 'CNPJ: ' + branch.value.branchCNPJ + '\n';
+      content += 'IE: ' + branch.value.branchIE + '\n';
+      content += 'Razão Social: ' + branch.value.branchName + '\n';
+      content += 'Fantasia: ' + branch.value.branchFantasy + '\n';
+      content += 'Cidade: ' + branch.value.branchCity + '\n';
+      content += 'Estado: ' + branch.value.branchState + '\n';
+      content += 'Telefone Establecimento: ' + branch.value.branchPhone + '\n';
+      content += this.getEmialCharge(branch.controls) + '\n';
+      content += this.getEmialContract(branch.controls) + '\n';
+      content += 'Regime Tributário: ' + branch.value.branchLaw + '\n';
+      content += this.getDigitalCertified(branch.controls) + '\n';
+      content += this.getSocialContract(branch.controls) + '\n';
+      content += this.getLogoTipo(branch.controls) + '\n';
+
       // content += 'Posto é Participante do ROT: ' + branch.branchROT + '\n';
       // content += '----------------------------------------------------------------------------------------------------\n';
       // content += 'Agencia: ' + branch.bankAgency + '\n';
@@ -177,7 +185,6 @@ export class RegisterComponent {
       // content += 'Nome do Gerente: ' + branch.bankManagerName + '\n';
     });
     content += '----------------------------------------------------------------------------------------------------\n';
-    content += 'Logotipo\n';
     content += 'Nome do Proprietário: ' + this.myform?.value?.propertyOwnerName + '\n';
     content += 'Telefone do Proprietário: ' + this.myform?.value?.propertyOwnerPhone + '\n';
     content += 'Email do Proprietário: ' + this.myform?.value?.propertyOwnerEmail + '\n';
@@ -187,9 +194,61 @@ export class RegisterComponent {
     content += this.getArgoDistributionsModules() + '\n';
     content += 'OBS Distribuidora: ' + this.myform?.value?.otherInformations + '\n';
 
-
-
     this.registerService.downloadStringAsFile(content);
+  }
+  getLogoTipo(controls: BranchesInterface) {
+    let text = 'Logotipo: ';
+    if (controls.branchLogotype.value === 'Sim')
+      text += 'Segue em Anexo.';
+    else if (controls.branchLogotype.value === 'Não')
+      text += 'Não tem disponível no momento';
+    else
+      text += 'Utilizar mesmo logo da Rede';
+
+
+    return text;
+  }
+  getSocialContract(controls: BranchesInterface): string {
+    let text = 'Contrato Social: ';
+    if (controls.branchDigitalCertified.value) {
+      text += 'Segue em Anexo.';
+    } else {
+      text += 'Cliente Providenciando, aguardando Contabilidade, troca de Razão';
+    }
+    return text;
+  }
+
+  getDigitalCertified(controls: BranchesInterface): string {
+    let text = 'Certificado Digital: ';
+    if (controls.branchDigitalCertified.value) {
+      text += 'Segue em Anexo.';
+    } else {
+      text += 'Cliente Providenciando, aguardando Contabilidade, troca de Razão';
+    }
+    return text;
+  }
+  getEmialCharge(branch: BranchesInterface): string {
+    let text = 'E-mail: Cobrança: ';
+    if (branch.isSamebranchChargeEmail.value) {
+      const propertyOwnerEmail = this.myform.get('propertyOwnerEmail')?.value;
+      text += propertyOwnerEmail;
+    }
+    else {
+      text += branch.branchChargeEmail.value;
+    }
+    return text;
+  }
+
+  getEmialContract(branch: BranchesInterface): string {
+    let text = 'E-mail: Cobrança: ';
+    if (branch.isSamebranchChargeEmail.value) {
+      const propertyOwnerEmail = this.myform.get('propertyOwnerEmail')?.value;
+      text += propertyOwnerEmail;
+    }
+    else {
+      text += branch.branchChargeEmail.value;
+    }
+    return text;
   }
   getArgoDistributionsModules() {
     let text = 'Módulos Distribuidora: ';

@@ -22,6 +22,10 @@
                 }
             </mat-form-field>
             <mat-form-field>
+                <mat-label>IE</mat-label>
+                <input type="text" matInput formControlName="branchIE">
+            </mat-form-field>
+            <mat-form-field>
                 <mat-label>Razão social</mat-label>
                 <input type="text" matInput formControlName="branchName">
             </mat-form-field>
@@ -65,27 +69,29 @@
             }
             <mat-form-field>
                 <mat-label>Email para envio de Contrato</mat-label>
-                <mat-select (selectionChange)="onEmailContractChange($event.value)">
-                    <mat-option value="Same">Mesmo do Proprietário</mat-option>
-                    <mat-option value="Other">Outro</mat-option>
+                <mat-select (selectionChange)="onEmailContractChange($event.value)"
+                    formControlName="isSameBranchContactEmail">
+                    <mat-option [value]=true>Mesmo do Proprietário</mat-option>
+                    <mat-option [value]=false>Outro</mat-option>
                 </mat-select>
             </mat-form-field>
             @if (isSameEmailContact()) {
             <mat-form-field>
-                <mat-label>Outro</mat-label>
+                <mat-label>Outro Email para envio de Contrato</mat-label>
                 <input type="text" matInput formControlName="branchContactEmail">
             </mat-form-field>
             }
             <mat-form-field>
                 <mat-label>Email para envio de Cobrança</mat-label>
-                <mat-select (selectionChange)="onEmailChargeChange($event.value)">
-                    <mat-option value="Same">Mesmo do Proprietário</mat-option>
-                    <mat-option value="Other">Outro</mat-option>
+                <mat-select (selectionChange)="onEmailChargeChange($event.value)"
+                    formControlName="isSamebranchChargeEmail">
+                    <mat-option [value]=true>Mesmo do Proprietário</mat-option>
+                    <mat-option [value]=false>Outro</mat-option>
                 </mat-select>
             </mat-form-field>
             @if (isSameEmailCharge()) {
             <mat-form-field>
-                <mat-label>Outro</mat-label>
+                <mat-label>Outro Email para envio de Cobrança</mat-label>
                 <input type="text" matInput formControlName="branchChargeEmail">
             </mat-form-field>
             }
